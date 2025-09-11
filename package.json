@@ -1,0 +1,28 @@
+{
+  "name": "catburglar",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"vite --host\" \"npm run server\"",
+    "server": "nodemon server/index.js",
+    "build": "vite build",
+    "zip": "vite build && node scripts/build.js",
+    "deploy": "node scripts/checkGit.js && npm run zip && gh-pages -d dist",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "chalk": "^5.4.1",
+    "concurrently": "^9.2.0",
+    "gh-pages": "^6.3.0",
+    "google-closure-compiler": "^20250721.0.0",
+    "nodemon": "^3.1.10",
+    "roadroller": "^2.1.0",
+    "terser": "^5.43.1",
+    "vite": "^7.0.4"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "uglify-js": "^3.19.3"
+  }
+}
