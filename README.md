@@ -5,11 +5,15 @@
 By [@eoinmcg](https://twitter.com/eoinmcg)
   
 Entry for [JS13kGames 2025 jam](https://js13kgames.com/2025/games/kleptokitty)
- ![Banner](https://raw.githubusercontent.com/eoinmcg/kleptokitty/main/promo/cover.png "Banner")
+--
+ ![Banner](https://raw.githubusercontent.com/eoinmcg/kleptokitty/main/promo/cover250x250.png "Banner")
+ ![screenshot](https://raw.githubusercontent.com/eoinmcg/kleptokitty/main/promo/screenshot1.png "screenshot")
+ ![gamplay](https://raw.githubusercontent.com/eoinmcg/kleptokitty/main/promo/gameplay1.png "gamplay")
 
 ## Play here
 
 [JS13k Game Jam entry](https://js13kgames.com/2025/games/kleptokitty)
+  
 [Latest version](https://eoinmcgrath.com/kleptokitty)
 
 ## About
@@ -24,17 +28,14 @@ crime.
 
 ## How To Play
 
-Swipe / Arrow keys / WASD to move
+__Swipe / Arrow keys / WASD to move__
+
+- Find keys
+- Collect loot
+- Escape
+- ...and don't get caught
   
-Find keys
-  
-Collect loot
-  
-Escape
-  
-...and don't get caught
-  
-[M] to mute.
+__[M]__ to mute.
 
 -----
 
