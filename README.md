@@ -6,9 +6,12 @@ By [@eoinmcg](https://twitter.com/eoinmcg)
   
 Entry for [JS13kGames 2025 jam](https://js13kgames.com/2025/games/kleptokitty)
 --
- ![Banner](https://raw.githubusercontent.com/eoinmcg/kleptokitty/main/promo/cover250x250.png "Banner")
- ![screenshot](https://raw.githubusercontent.com/eoinmcg/kleptokitty/main/promo/screenshot1.png "screenshot")
- ![gamplay](https://raw.githubusercontent.com/eoinmcg/kleptokitty/main/promo/gameplay1.gif "gamplay")
+
+<div style="display: flex; align-items: flex-start;">
+  <img src="https://raw.githubusercontent.com/eoinmcg/kleptokitty/main/promo/cover250x250.png" title="Banner"">
+  <img src="https://raw.githubusercontent.com/eoinmcg/kleptokitty/main/promo/screenshot1.png" title="screenshot"">
+  <img src="https://raw.githubusercontent.com/eoinmcg/kleptokitty/main/promo/gameplay1.gif" title="gamplay"">
+</div>
 
 ## Play here
 
