@@ -1,10 +1,13 @@
+// Inspired by https://github.com/repsej/TheWayOfTheDodo
+// Slopped together by claude
+
 const JAZZ_CONFIG = {
     swingRatio: 0.67, // Swing feel
     tempoRange: [3, 4.5], // Slower jazz tempo
     chordProgression: [
         [0, 3, 7, 10], // minor 7th
         [5, 8, 12, 15], // dominant 7th
-        // [0, 4, 7, 11], // major 7th
+        [0, 4, 7, 11], // major 7th
         [2, 5, 9, 12], // minor 7th
     ],
     jazzScales: {

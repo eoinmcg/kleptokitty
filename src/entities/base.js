@@ -36,7 +36,6 @@ export default class BaseObject extends EngineObject {
     const canSee = engineObjectsRaycast(this.pos, this.fov);
     for (const o of canSee) {
       if (o.name === 'cat') {
-        console.log('SPOtTED', o.pos, this.pos);
         this.o.sfx.spotted.play();
         this.chasing = o;
         break;

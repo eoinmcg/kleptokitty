@@ -39,7 +39,7 @@ const nextLevel = () => {
   engineObjects.forEach(o => o.destroy());
   let t = time - startTime;
     startTime = time;
-  new LevelComplete({ pos, updateScore, complete, score, level, startGame, sfx, moves, loot, levelLoot, t });
+  new LevelComplete({ pos, updateScore, complete, score, level, startGame, sfx, moves, loot, levelLoot, t, deaths });
 }
 
 const startGame = () => {

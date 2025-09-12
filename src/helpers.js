@@ -21,7 +21,7 @@ export function makeLevel(data, opts) {
   const col = PAL[use];
 
   const wall = new TileLayerData(10, 0, false, col[0]),
-        wallShadow = new TileLayerData(8, 0, false, col[1]);
+        wallShadow = new TileLayerData(opts.level > 3 ? 9 : 8, 0, false, col[1]);
 
   let player, loot = 0;
   

@@ -35,7 +35,7 @@ export default class LevelComplete extends EngineObject {
     let x = mainCanvasSize.x / 2;
     if (t > 0.5) {
       bang(1);
-      niceText(this.complete ? 'YOU WIN' : 'LEVEL COMPLETE', x, 50, 2.7);
+      niceText(this.complete ? 'VICTORY!' : 'LEVEL COMPLETE', x, 50, 2.7);
     }
 
     if (t > 2) {
@@ -52,6 +52,7 @@ export default class LevelComplete extends EngineObject {
     }
     if (t > 6 && this.complete) {
       niceText('SCORE: ' + this.score, x, 375, 3);
+      niceText('DEATHS: ' + this.deaths, x, 425, 2.25);
     }
   }
 }

@@ -2,7 +2,7 @@ import BaseObject from './base';
 
 export default class Dog extends BaseObject {
   constructor(pos, sfx) {
-    super(pos.add(vec2(0, .5)), vec2(1), tile(13, 8), {sfx});
+    super(pos.add(vec2(0, .5)), vec2(.9), tile(13, 8), {sfx});
     this.dir = 1;
     this.speed = .1;
   }

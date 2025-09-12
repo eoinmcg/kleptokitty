@@ -738,7 +738,7 @@
             return cleaned;
         }
 
-let keys = '01PKDGLSE'.split('')
+let keys = '01PKDGLSEC'.split('')
   keys.forEach((k, i) => {
         keys[i] = (k == '0' || k == '1') ? 'Digit'+k : 'Key'+k; 
 });
@@ -749,7 +749,7 @@ addEventListener('keyup', (e) => {
       const modalOpen = document.documentElement.getAttribute('class') === 'modal-is-open';
       const mapContainer = document.querySelector('.map-container');
       let scale = mapContainer.getAttribute('data-scale') || 1;
-      sale = parseFloat(scale);
+      scale = parseFloat(scale);
 
       if (e.code === 'Equal' || e.code === 'Minus') {
           let factor = (e.code === 'Equal') ? 1.1 : 0.9;
