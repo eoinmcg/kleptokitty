@@ -16,6 +16,11 @@
       font-style: normal;
     }
   /* Layout  ---------------------------- */
+:root {
+  --primary: hotpink;
+  --primary-hover: pink;
+  --primary-focus: rgba(92, 107, 192, 0.125);
+}
         * {
             margin: 0;
             padding: 0;
@@ -278,8 +283,9 @@
         .controls h3 {
             margin-top: 0;
             margin-bottom: 15px;
-            color: #333;
-       }
+            font-size: 200%; 
+            color: crimson;
+  }
         
         .control-group {
           width: 45%; display: inline-block;
@@ -307,6 +313,20 @@
             margin-top: 15px;
         }
 
+dl {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  gap: 1em;
+  color: #333;
+}
+
+dt {
+  font-weight: bold; /* Optional styling for the term */
+}
+
+dd {
+  margin: 0; /* Resets the default margin of the dd element */
+}
     </style>
 </head>
 <body>
@@ -413,7 +433,7 @@
                 </div>
                 <div class="control-buttons">
                     <button onclick="createMap()">Create Map</button>
-                    <button onclick="clearMap()">Clear Map</button>
+                    <button class="contrast" onclick="clearMap()">Clear Map</button>
                 </div>
                 </form>
             </div>
@@ -438,9 +458,8 @@
                   <dt>Save</dt>
                   <dd><kbd>Shift</kbd> + <kbd>S</kbd></dd>
 
-                  <hr />
-                  <dt><b>Zoom out</b><kbd>-</kbd></dt>
-                  <dt><b>Zoom In</b><kbd>-</kbd></dt>
+                  <dt>Zoom in</dt><dd><kbd>+</kbd></dd>
+                  <dt>Zoom out</dt><dd><kbd>-</kbd></dd>
                 </dl>
             </div>
             </article>
@@ -450,7 +469,7 @@
             <article>
             <div class="controls export-import">
                 <div class="close"></div>
-                <label>Level data:</label>
+                <h3>Level data:</h3>
                 <textarea id="arrayData" placeholder="Paste your map array here for import, or exported data will appear here..."></textarea>
                 <div class="control-buttons">
                   <button onclick="exportMap()">Export</button>
