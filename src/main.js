@@ -10,7 +10,6 @@ import LevelComplete from './entities/levelComplete';
 document.title = D.title;
 tileFixBleedScale = .5;
 const levels = raw.split('+');
-console.log(levels);
 
 document.head.innerHTML += `<style>body{transition:opacity.5s}body.out{opacity:0}body.in{opacity:1}</style>`;
 

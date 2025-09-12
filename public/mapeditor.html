@@ -97,6 +97,15 @@
             padding-bottom: 40px;
         }
 
+        .scale {
+          transition: all .2s ease-in;
+          padding: .5rem 2rem;
+          color: #666;
+          display: flex; 
+          gap: 10px;
+          background: #fff;
+        }
+
         /* Toolbar */
         /* .toolbar { background: #00426f; } */
         .toolbar article { background: transparent; box-shadow: none; margin:10px 0 0 0; padding: 5px 5px 5px 0; }
@@ -334,8 +343,6 @@ dd {
         <!-- Header -->
         <header class="header">
         <h1>KleptoKitty MapEditor</h1>
-
-
             <nav class="nav-container">
                 <button class="modal secondary icon" data-target="settings-modal"
                   data-tooltip="New map (shift + n)" data-placement="bottom">
@@ -356,6 +363,11 @@ dd {
                 </button>
             </nav>
         </header>
+
+        <div class="scale">
+          <label>Zoom: </label>
+          <input type="range" min="20" max="200" step="10" />
+        </div>
 
         <!-- Main Layout -->
         <div class="main-layout">
@@ -761,6 +773,14 @@ let keys = '01PKDGLSEC'.split('')
   keys.forEach((k, i) => {
         keys[i] = (k == '0' || k == '1') ? 'Digit'+k : 'Key'+k; 
 });
+
+document.querySelector('.scale input').addEventListener('input', (e) => {
+    let scale = parseInt(e.target.value, 10) / 100;
+    const mapContainer = document.querySelector('.map-container');
+    mapContainer.style.transform = `scale(${scale})`
+    mapContainer.setAttribute('data-scale', scale);
+    console.log(scale);
+})
 
 addEventListener('keyup', (e) => {
 
