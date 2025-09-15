@@ -11,7 +11,14 @@ document.title = D.title;
 tileFixBleedScale = .5;
 const levels = raw.split('+');
 
-document.head.innerHTML += `<style>body{transition:opacity.5s}body.out{opacity:0}body.in{opacity:1}</style>`;
+document.head.innerHTML += `<style>
+
+@font-face {
+  font-family: Slackey;
+  src: url(Slackey-Regular.ttf);
+}
+body{transition:opacity.5s}body.out{opacity:0}body.in{opacity:1}
+</style>`;
 
 // Create SFX
 const sfx = {};
@@ -19,9 +26,16 @@ for (const key in D.sfx) sfx[key] = new Sound(D.sfx[key]);
 
 // setGlEnable(true);
 
+
+const importLevel = location.href.split('?')[1];
+if (importLevel) {
+  levels.unshift(importLevel);
+}
+
+
 let player, clicked,
     score = 0,
-    level = parseInt(location.search.split('=').pop(), 10) - 1 || 0,
+    level = (importLevel && importLevel.length < 2) ? parseInt(importLevel, 10) : 0,
     // level = 0,
     deaths = 0,
     mute = 0,
@@ -50,15 +64,17 @@ const startGame = () => {
     ready = true;
     player = makeLevel(levels[level], { setGameOver, updateScore, nextLevel, sfx, level });
     startTime = time;
-    if (level === 0) {
+    if (level === 0 && !importLevel) {
       new Msg(isTouchDevice ? 'Swipe to move' : 'ARROWS TO MOVE');
       setTimeout(() => new Msg('Find the Key'), 2500);
       setTimeout(() => new Msg('Grab loot'), 4000);
       setTimeout(() => new Msg('Escape'), 6000);
+    } else if (importLevel) {
+      new Msg(`Testing`, 3);
     } else {
       new Msg(`Level ${level}`, 3);
     }
-    musicInit(level);
+    musicInit(importLevel ? rand(100,200) : level);
   }, 500);
 };
 
@@ -78,7 +94,10 @@ function gameInit() {
   cameraPos = D.center;
   cameraScale = 20;
   objectDefaultDamping = .7;
-  // startGame();
+
+  if (importLevel) {
+    startGame();
+  }
 }
 
 function gameUpdate() {
@@ -113,12 +132,15 @@ function gameRender() {
   let c = new Color(0,.2,.3);
   
   if (!ready) {
+    const ctx = mainContext;
     let x = Math.sin(time*.2)*8;
-    drawRect(vec2(D.center), vec2(20,30), c, 0, false);
-    drawCircle(D.center.add(vec2(x, 0)), 4, WHITE);
+    drawRect(vec2(D.center), vec2(20,30), WHITE, 0, false);
+    drawTile(vec2(D.center).add(vec2(0,-2)), vec2(8), tile(0, 128, 1));
+    drawTile(vec2(D.center).add(vec2(x,0)), vec2(30), tile(0, 512, 2), new Color(0,.1,.25));
 
-    drawTile(vec2(D.center).add(vec2(0,-3)), vec2(4), tile(2, 8), c);
-    niceText(D.title, w, h * 0.15, 3);
+
+
+    niceText(D.title, w, h * 0.15, 3.6, '#ff70c5');
 
     if (flash) {
       niceText(isTouchDevice ? 'TAP ME' : 'PRESS ↑ or W', w, h - 50, 2, YELLOW);
@@ -152,5 +174,6 @@ function gameRenderPost() {
 
   } 
 }
+
 
 engineInit(gameInit, gameUpdate, gameUpdatePost, gameRender, gameRenderPost, D.tiles);

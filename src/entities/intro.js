@@ -1,3 +1,5 @@
+import Loot from './loot';
+
 export default class Intro extends EngineObject {
 
   constructor(o) {
@@ -7,6 +9,7 @@ export default class Intro extends EngineObject {
     this.t = '';
     this.text = "If a black cat\n crosses your path,\n count your diamonds,\n for they may\n vanish by dawn";
     this.add();
+    // this.children.push(new Loot(cameraPos.add(0, -3)));
   }
 
   add() {
@@ -27,6 +30,6 @@ export default class Intro extends EngineObject {
   render() {
     const t = time - this.startTime;
     drawRect(this.pos, vec2(20,20), BLACK);
-    drawTextOverlay(this.t, cameraPos, .8, BLACK, .2, YELLOW)
+    drawTextOverlay(this.t, cameraPos, .8, BLACK, .3, YELLOW, 'center', 'Slackey')
   }
 }

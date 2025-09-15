@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import Data from '../src/data.js';
+import levels from '../src/data/levels.js';
 
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -39,6 +40,10 @@ if (!fs.existsSync('dist')) {
 // tile(s) extracted from ./src/data.js
 const dataFiles = Data.tiles.map(tile => `public/${tile}`);
 
+dataFiles.push('public/Slackey-Regular.ttf');
+dataFiles.push('public/mapeditor.html');
+dataFiles.push('public/postmortem.html');
+
 console.log(``);
 chalkSuccess(` Building ${Data.title}... `, '🛠️');
 console.log(``);
@@ -53,6 +58,13 @@ fs.mkdirSync(BUILD_FOLDER);
 // copy data files
 for(const file of dataFiles) 
 fs.copyFileSync(file, `${BUILD_FOLDER}/${file.split('/').pop()}`);
+
+// fs.unlinkSync(`${BUILD_FOLDER}/levels.txt`);
+fs.writeFileSync(`${BUILD_FOLDER}/levels.txt`, levels);
+
+let mapeditor = fs.readFileSync(`${BUILD_FOLDER}/mapeditor.html`, 'utf8');
+mapeditor = mapeditor.replace('</head>', '<script>window.BUILD=true</script></head>');
+fs.writeFileSync(`${BUILD_FOLDER}/mapeditor.html`, mapeditor);
 
 Build
   (
@@ -120,7 +132,7 @@ function uglifyBuildStep(filename)
 {
   console.log(`Running uglify...`);
   // child_process.execSync(`npx terser ${filename} -c -m -o ${filename}`, {stdio: 'inherit'});
-  child_process.execSync(`npx uglifyjs ${filename} -c -m reserved=[SHADOW,PAL] -o ${filename}`, {stdio: 'inherit'});
+  child_process.execSync(`npx uglifyjs ${filename} -c -m reserved=[SHADOW,PAL,importLevel] -o ${filename}`, {stdio: 'inherit'});
 };
 
 function roadrollerBuildStep(filename)

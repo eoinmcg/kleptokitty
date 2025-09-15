@@ -1,3 +1,4 @@
+import D from './data';
 import Player from './entities/player';
 import Key from './entities/key';
 import Exit from './entities/exit';
@@ -60,7 +61,6 @@ export function makeLevel(data, opts) {
 }
 
 
-
 export function favIcon() {
   const canvas = document.createElement('canvas');
   canvas.width = 8;
@@ -88,8 +88,8 @@ export function niceText( text, x, y, sizeFactor = 1,
     // Set shared context properties once
     overlayContext.textAlign = "center";
     overlayContext.textBaseline = "middle";
-    // overlayContext.font = `${fontSize}px "Slackey"`;
-    overlayContext.font = `${fontSize}px monospace`;
+    // overlayContext.font = `${fontSize}px "monospace"`;
+    overlayContext.font = `${fontSize}px Slackey`;
     overlayContext.lineWidth = outlineWidth;
 
     // Draw drop shadow

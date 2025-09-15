@@ -101,7 +101,7 @@ export default class Player extends Sprite {
     drawTile(this.pos.add(vec2(0, .2)), vec2(1), tile(frame, 8), undefined, 0, this.mirror);
 
     if (this.lockedOut) {
-      drawTextOverlay('LOCKED', cameraPos.add(vec2(0,2)), 1, RED, .3);
+      drawTextOverlay('LOCKED', cameraPos.add(vec2(0,2)), 1, RED, .3, WHITE, 'center', 'Slackey');
     }
     this.lockedOut = false;
 

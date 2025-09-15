@@ -6,7 +6,7 @@
 const Data = {
   title: 'KleptoKitty', // this will be injected into document.title
   width: 270, height: 480, // mobile portratit
-  tiles: ['t.gif'], // tiles are located in public/
+  tiles: ['t.gif', 'mugshot.png', 'spotlight.png'], // tiles are located in public/
   tileSize: 8,
   sfx: { // create effects here: https://killedbyapixel.github.io/ZzFX/
     click: [1,.5],
