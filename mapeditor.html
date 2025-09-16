@@ -33,10 +33,10 @@
   
   <nav id="menu">
     <ul>
-      <li><a onclick="exportMap()"><i data-lucide="gamepad"></i>Play Map</a></li>
-      <li><a class="modal" data-target="settings-modal"><i data-lucide="map-plus"></i>New Map</a></li>
-      <li><a class="modal" data-target="import-modal"><i data-lucide="import"></i>Import</a></li>
-      <li><a class="modal" data-target="help-modal"><i data-lucide="info"></i>Info</a></li>
+      <li><button onclick="exportMap()"><i data-lucide="gamepad"></i>Play Map</button></li>
+      <li><button class="modal" data-target="settings-modal"><i data-lucide="map-plus"></i>New Map</button></li>
+      <li><button class="modal" data-target="import-modal"><i data-lucide="import"></i>Import</button></li>
+      <li><button class="modal" data-target="help-modal"><i data-lucide="info"></i>Info</button></li>
     </ul>
   </nav>
 </div>
@@ -44,7 +44,8 @@
             </nav>
         </header>
             <!-- toolbar -->
-          <aside class="toolbar" id="toolbar">
+          <aside class="toolbar draggable" id="toolbar" role="region" aria-grabbed="false">
+            <div class="drag-handle"><i data-lucide="grip-vertical"></i> Tiles </div>
               <article>
             <div class="legend">
                 <div class="tile-selector">
@@ -91,8 +92,8 @@
 
         <div class="scale">
           <div>
-            <label><i data-lucide="zoom-in"></i></label>
-            <input type="range" min="20" max="200" step="10" />
+            <label for="zoom-range"><i data-lucide="zoom-in"></i></label>
+            <input id="zoom-range" type="range" min="20" max="200" step="10" />
           </div>
           <div><button onclick="undo()" data-tooltip="Undo"><i data-lucide="undo"></i></button></div>
         </div>
@@ -141,11 +142,14 @@
                 <div class="close"></div>
                 <h3>Help</h3>
                 <dl>
-                  <dt>Import</dt>
-                  <dd><kbd>Shift</kbd> + <kbd>I</kbd></dd>
-
                   <dt>Play current level</dt>
                   <dd><kbd>Shift</kbd> + <kbd>E</kbd></dd>
+
+                  <dt>New Map</dt>
+                  <dd><kbd>Shift</kbd> + <kbd>N</kbd></dd>
+
+                  <dt>Import</dt>
+                  <dd><kbd>Shift</kbd> + <kbd>I</kbd></dd>
 
                   <dt>Save</dt>
                   <dd><kbd>Shift</kbd> + <kbd>S</kbd></dd>

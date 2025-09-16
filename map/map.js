@@ -250,11 +250,11 @@ function saveMap() {
 function showStatus(message, type) {
   const status = document.getElementById('status');
   status.textContent = message;
-  status.className = `status ${type}`;
+  status.className = `status ${type} show`;
   status.style.display = 'block';
 
   setTimeout(() => {
-    status.style.display = 'none';
+    status.classList.remove('show');
   }, 3000);
 }
 
@@ -391,6 +391,7 @@ loadLevels()
     });
     document.querySelector('ul.levels').innerHTML = html;
     document.querySelector('ul.levels').addEventListener('click', (e) => {
+      e.preventDefault();
       let prev = currentlyEditing;
       let mapCopy = [...mapData];
       let mapArray = JSON.stringify(mapCopy.reverse().join('-'), null, 2)+',';
@@ -455,7 +456,7 @@ img.onload = () => {
     makeImage(img, t, x, y);
   }
 };
-img.src = 't.gif';
+img.src = 'map_t.gif';
 
 window.setTimeout(() => {
   document.querySelector('.tile-option[data-tile="P"]')
@@ -581,3 +582,105 @@ document.querySelector('#settings-modal form')
     return false;
   }, false);
 
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const draggable = document.querySelector('.draggable');
+  const dragHandle = draggable.querySelector('.drag-handle');
+
+  let isDragging = false;
+  let offsetX, offsetY;
+
+  // Function to get event coordinates
+  function getCoords(e) {
+    if (e.touches) {
+      return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+    return { x: e.clientX, y: e.clientY };
+  }
+
+  // Mouse/Touch down handler
+  const startDrag = (e) => {
+    isDragging = true;
+    draggable.classList.add('is-dragging');
+    draggable.setAttribute('aria-grabbed', 'true');
+
+    // Calculate the initial offset from the pointer to the element's top-left corner
+    const coords = getCoords(e);
+    offsetX = coords.x - draggable.getBoundingClientRect().left;
+    offsetY = coords.y - draggable.getBoundingClientRect().top;
+  };
+
+  // Mouse/Touch move handler
+  const drag = (e) => {
+    if (!isDragging) return;
+    
+    // Prevent default to avoid selection and scrolling issues on mobile
+    e.preventDefault();
+
+    const coords = getCoords(e);
+
+    // Calculate new position relative to the viewport
+    let newX = coords.x - offsetX;
+    let newY = coords.y - offsetY;
+
+    // Apply the new position
+    draggable.style.left = `${newX}px`;
+    draggable.style.top = `${newY}px`;
+  };
+
+  // Mouse/Touch up handler
+  const endDrag = () => {
+    isDragging = false;
+    draggable.classList.remove('is-dragging');
+    draggable.setAttribute('aria-grabbed', 'false');
+  };
+
+  // Add event listeners for both mouse and touch events
+  dragHandle.addEventListener('mousedown', startDrag);
+  dragHandle.addEventListener('touchstart', startDrag);
+
+  document.addEventListener('mousemove', drag);
+  document.addEventListener('touchmove', drag, { passive: false });
+
+  document.addEventListener('mouseup', endDrag);
+  document.addEventListener('touchend', endDrag);
+
+  // Keyboard accessibility for dragging
+  let isKeyboardDragging = false;
+  draggable.addEventListener('keydown', (e) => {
+    if (e.key === ' ' || e.key === 'Enter') {
+      isKeyboardDragging = !isKeyboardDragging;
+      draggable.setAttribute('aria-grabbed', isKeyboardDragging);
+      e.preventDefault();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!isKeyboardDragging) return;
+
+    let { top, left } = draggable.getBoundingClientRect();
+    const moveAmount = 10;
+
+    switch (e.key) {
+      case 'ArrowUp':
+        top -= moveAmount;
+        break;
+      case 'ArrowDown':
+        top += moveAmount;
+        break;
+      case 'ArrowLeft':
+        left -= moveAmount;
+        break;
+      case 'ArrowRight':
+        left += moveAmount;
+        break;
+      default:
+        return;
+    }
+
+    draggable.style.left = `${left}px`;
+    draggable.style.top = `${top}px`;
+    e.preventDefault();
+  });
+});
