@@ -250,11 +250,11 @@ function saveMap() {
 function showStatus(message, type) {
   const status = document.getElementById('status');
   status.textContent = message;
-  status.className = `status ${type}`;
+  status.className = `status ${type} show`;
   status.style.display = 'block';
 
   setTimeout(() => {
-    status.style.display = 'none';
+    status.classList.remove('show');
   }, 3000);
 }
 

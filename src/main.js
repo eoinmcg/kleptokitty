@@ -11,10 +11,8 @@ document.title = D.title;
 tileFixBleedScale = .5;
 const levels = raw.split('+');
 
-if(window.BUILD) {
-  setShowWatermark(false);
-  setShowSplashScreen(true);
-}
+const muteIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/></svg>';
+const mutedIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>';
 
 document.head.innerHTML += `<style>
 @font-face {
@@ -22,6 +20,14 @@ document.head.innerHTML += `<style>
   src: url(Slackey-Regular.ttf);
 }
 body{transition:opacity.5s}body.out{opacity:0}body.in{opacity:1}
+#mute { position: absolute; top: 15px; left: 15px; width: 32px; height: 32px; 
+ background-image: url('data:image/svg+xml,${encodeURIComponent(muteIcon)}');
+ 
+}
+#mute.muted { 
+ background-image: url('data:image/svg+xml,${encodeURIComponent(mutedIcon)}');
+}
+#mute:hover { cursor: pointer; }
 </style>`;
 
 // Create SFX
@@ -106,9 +112,12 @@ function gameInit() {
 }
 
 function gameUpdate() {
-  clicked = keyWasPressed('ArrowUp') || mouseWasPressed(0);
+  clicked = keyWasPressed('ArrowUp') || gamepadIsDown(2) || (mouseWasPressed(0) && mousePosScreen.y > 50);
 
-  if (keyWasPressed('KeyM')) mute = !mute
+  if (keyWasPressed('KeyM')) {
+    mute = !mute;
+    muteButton.className = mute ? 'muted' : '';
+  }
   
   if (!ready && clicked) {
     ready = true;
@@ -139,7 +148,7 @@ function gameRender() {
   if (!ready) {
     const ctx = mainContext;
     let x = Math.sin(time*.2)*8;
-    drawRect(vec2(D.center), vec2(20,30), WHITE, 0, false);
+    drawRect(vec2(D.center), vec2(20,30), new Color(.5,.5,1,.3), 0, false);
     drawTile(vec2(D.center).add(vec2(0,-2)), vec2(8), tile(0, 128, 1));
     drawTile(vec2(D.center).add(vec2(x,0)), vec2(30), tile(0, 512, 2), new Color(0,.1,.25));
 
@@ -182,3 +191,19 @@ function gameRenderPost() {
 
 
 engineInit(gameInit, gameUpdate, gameUpdatePost, gameRender, gameRenderPost, D.tiles);
+
+let muteButton = '';
+window.setTimeout(() => {
+
+  muteButton = document.createElement('div');
+  muteButton.id = 'mute';
+  muteButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      mute = !mute;
+      console.log({mute})
+      muteButton.className = mute ? 'muted' : '';
+      return false;
+  }, false);
+  document.body.appendChild(muteButton);
+
+});
