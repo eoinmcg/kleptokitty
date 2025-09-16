@@ -66,6 +66,8 @@ let mapeditor = fs.readFileSync(`${BUILD_FOLDER}/mapeditor.html`, 'utf8');
 mapeditor = mapeditor.replace('</head>', '<script>window.BUILD=true</script></head>');
 fs.writeFileSync(`${BUILD_FOLDER}/mapeditor.html`, mapeditor);
 
+fs.cpSync('public/map', `${BUILD_FOLDER}/map`, {recursive: true});
+
 Build
   (
     `${BUILD_FOLDER}/index.js`,

@@ -29,7 +29,7 @@ for (const key in D.sfx) sfx[key] = new Sound(D.sfx[key]);
 
 const importLevel = location.href.split('?')[1];
 if (importLevel) {
-  levels.unshift(importLevel);
+  levels.unshift(importLevel.replace('i=', ''));
 }
 
 
@@ -74,7 +74,8 @@ const startGame = () => {
     } else {
       new Msg(`Level ${level}`, 3);
     }
-    musicInit(importLevel ? rand(100,200) : level);
+    // musicInit(importLevel ? rand(100,200) : level);
+    musicInit(level);
   }, 500);
 };
 
