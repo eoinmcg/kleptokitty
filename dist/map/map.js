@@ -194,7 +194,7 @@ function importMap() {
 }
 
 function saveAll() {
-  if (BUILD) {
+  if (window.BUILD) {
     showStatus(`Saving only available in dev mode`, 'error');
     return;
   }
@@ -294,6 +294,17 @@ keys.forEach((k, i) => {
   keys[i] = (k == '0' || k == '1') ? 'Digit'+k : 'Key'+k; 
 });
 
+const undo = () => {
+    const lastAction = history.pop();
+    if (lastAction) {
+      mapData[lastAction[0]] = lastAction[1];
+      renderMap();
+    } else {
+      showStatus('Already at last action', 'note');
+    }
+}
+const redo = () => { }
+
 document.querySelector('.scale input').addEventListener('input', (e) => {
   let scale = parseInt(e.target.value, 10) / 100;
   const mapContainer = document.querySelector('.map-container');
@@ -318,13 +329,7 @@ addEventListener('keyup', (e) => {
   }
 
   if (e.code === 'KeyZ' && e.ctrlKey) {
-    const lastAction = history.pop();
-    if (lastAction) {
-      mapData[lastAction[0]] = lastAction[1];
-      renderMap();
-    } else {
-      showStatus('Already at last action', 'note');
-    }
+    undo();
   }
   if (e.code === 'KeyZ' && e.ctrlKey && e.shiftKey) {
     console.log('redo');
@@ -473,11 +478,10 @@ window.setTimeout(() => {
 }, 1000);
 
 // menu
-
 const menuButton = document.getElementById('menu-button');
 const menu = document.getElementById('menu');
 function closeMenu() { menuButton.checked = false; }
-
+//
 // modals
 const isOpenClass = "modal-is-open";
 const openingClass = "modal-is-opening";
@@ -536,7 +540,7 @@ document.addEventListener("click", (event) => {
   const isClickOnMenuButton = menuButton.contains(event.target) 
     || document.querySelector('.menu-toggle-label').contains(event.target);
 
-  if (!isClickInsideMenu && !isClickOnMenuButton) {
+  if (!isClickInsideMenu && !isClickOnMenuButton && !visibleModal) {
     closeMenu();
   }
 

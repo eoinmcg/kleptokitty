@@ -11,8 +11,12 @@ document.title = D.title;
 tileFixBleedScale = .5;
 const levels = raw.split('+');
 
-document.head.innerHTML += `<style>
+if(window.BUILD) {
+  setShowWatermark(false);
+  setShowSplashScreen(true);
+}
 
+document.head.innerHTML += `<style>
 @font-face {
   font-family: Slackey;
   src: url(Slackey-Regular.ttf);

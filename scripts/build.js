@@ -158,6 +158,7 @@ function htmlBuildStep(filename)
   let buffer = '';
   buffer += '<body>';
   buffer += '<script>';
+  buffer += 'window.BUILD=true;';
   buffer += fs.readFileSync(filename);
   buffer += '</script>';
 

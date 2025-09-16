@@ -39,14 +39,15 @@ h1, h2, h3 { font-weight: normal; font-family: "Slackey", sans-serif; }
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 1rem 2rem;
-  background-color: var(--background-color);
+  background-color: #000;
   border-bottom: 1px solid var(--muted-border-color);
   flex-shrink: 0;
 }
 
 .header h1 {
+  color: #fff;
   margin: 0;
   font-size: 1.5rem;
   text-shadow: -1px -1px 0 hotpink, 1px -1px 0 hotpink -1px 1px 0 hotpink 1px 1px 0 hotpink;
@@ -64,7 +65,7 @@ h1, h2, h3 { font-weight: normal; font-family: "Slackey", sans-serif; }
 }
 
 .nav-container details {
-  margin: 0;
+  margin: 0 1rem 0 0;
 }
 
 .nav-container details summary {
@@ -79,6 +80,78 @@ h1, h2, h3 { font-weight: normal; font-family: "Slackey", sans-serif; }
   color:#333;
 }
 
+/* Menu Layout */
+#menu {
+  z-index: 999999;
+  display: flex;
+  position: fixed;
+  top: 0; right: -400px;
+  width: 400px;
+  height: 100vh;
+  background: rgba(0,0,0,0.9);
+  border-left: 2px solid #000;
+  transition: right .2s ease;
+}
+
+.menu-btn {
+  display: none;
+}
+
+.menu-toggle-label {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  cursor: pointer;
+  z-index: 9999999;
+}
+
+
+.menu-btn:checked ~ #menu {
+  right: 0;
+}
+.menu-toggle-label .icon-menu {
+  display: block;
+}
+.menu-toggle-label .icon-close {
+  display: none;
+}
+.menu-btn:checked ~ .menu-toggle-label .icon-menu {
+  display: none;
+}
+.menu-btn:checked ~ .menu-toggle-label .icon-close {
+  display: block;
+}
+
+#menu ul {
+  padding-top: 3rem;
+  display: block;
+  margin: 0; /* Removes default margin */
+  width: 100%;
+}
+
+#menu li {
+  width: 100%; /* Ensures each list item is full width */
+  margin-bottom: 5px; /* Adds some space between items */
+}
+#menu ul li { width: 100%; }
+#menu.open { right: 0; }
+.menu-btn:checked ~ #menu {
+  right: 0;
+}
+#menu li a {
+  display: block; 
+  padding: 15px 20px;
+  background-color: rgba(0,0,0,0.1);
+  color: #ddd;
+  border-radius: 0;
+}
+
+#menu li a:hover {
+  background-color: hotpink;
+  color: #333;
+}
+#menu li a svg { opacity: .5; display: inline-block; margin-right: 1rem; }
+
 
 /* Main Layout */
 .main-layout {
@@ -90,16 +163,52 @@ h1, h2, h3 { font-weight: normal; font-family: "Slackey", sans-serif; }
 }
 
 .scale {
-  transition: all .2s ease-in;
-  padding: .5rem 2rem;
-  color: #666;
-  display: flex; 
-  gap: 10px;
-  background: #fff;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5px;
+    gap: 5px;
+}
+
+.scale > div {
+  margin-bottom: var(--spacing); /* Add spacing between vertically stacked items */
+}
+
+.scale button { background: transparent; border: 1px solid rgba(0,0,0,0.2); padding: .5rem; color: #777; }
+
+/* Center and adjust spacing on larger screens */
+@media (min-width: 768px) {
+  .scale {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .scale > div {
+    margin-bottom: 0; /* Remove vertical spacing on larger screens */
+  }
+
+  /* Make the zoom container take up the available space */
+  .scale > div:first-child {
+    flex-grow: 1;
+  }
+
+  /* Adjust spacing between the zoom components and buttons */
+  .scale > div:first-child label {
+    margin-right: var(--spacing);
+  }
+}
+
+/* Ensure the zoom elements are aligned horizontally */
+.scale > div:first-child {
+  display: flex;
+  align-items: center;
 }
 
 /* Toolbar */
 /* .toolbar { background: #00426f; } */
+.toolbar { position: fixed; left: 0; top: 6rem; width: 50px; 
+  z-index: 99999; }
 .toolbar article { background: transparent; box-shadow: none; margin:10px 0 0 0; padding: 5px 5px 5px 0; }
 
 /* Main Content */

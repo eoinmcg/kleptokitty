@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,34 +18,31 @@
         <header class="header">
         <h1>KleptoKitty MapEditor</h1>
             <nav class="nav-container">
-                <button class="modal secondary icon" data-target="settings-modal"
-                  data-tooltip="New map (shift + n)" data-placement="bottom">
-                  <i data-lucide="map-plus"></i><span>New Map</span>
-                </button>
-                <button class="modal secondary icon" data-target="import-modal"
-                  data-tooltip="Import map (shift + i)" data-placement="bottom">
-                  <i data-lucide="import"></i><span>Import map</span>
-                </button>
                 <details role="list">
                     <summary>Levels</summary>
                     <ul role="listbox" class="levels">
                     </ul>
                 </details>
-                <button class="modal help icon muted" data-target="help-modal"
-                data-tooltip="More info" data-placement="bottom">
-                  <i data-lucide="info"></i><span>Help</span>
-                </button>
+                <div class="menu-wrapper">
+                  <input type="checkbox" id="menu-button" class="menu-btn" />
+                  <label for="menu-button" class="menu-toggle-label">
+                    <i class="icon-menu" data-lucide="menu"></i>
+                    <i class="icon-close" data-lucide="x"></i>
+                  </label>
+
+  
+  <nav id="menu">
+    <ul>
+      <li><a onclick="exportMap()"><i data-lucide="gamepad"></i>Play Map</a></li>
+      <li><a class="modal" data-target="settings-modal"><i data-lucide="map-plus"></i>New Map</a></li>
+      <li><a class="modal" data-target="import-modal"><i data-lucide="import"></i>Import</a></li>
+      <li><a class="modal" data-target="help-modal"><i data-lucide="info"></i>Info</a></li>
+    </ul>
+  </nav>
+</div>
+
             </nav>
         </header>
-
-        <div class="scale">
-          <label>Zoom: </label>
-          <input type="range" min="20" max="200" step="10" />
-        </div>
-
-        <!-- Main Layout -->
-        <div class="main-layout">
-            
             <!-- toolbar -->
           <aside class="toolbar" id="toolbar">
               <article>
@@ -92,6 +89,18 @@
               </article>
             </aside>
 
+        <div class="scale">
+          <div>
+            <label><i data-lucide="zoom-in"></i></label>
+            <input type="range" min="20" max="200" step="10" />
+          </div>
+          <div><button onclick="undo()" data-tooltip="Undo"><i data-lucide="undo"></i></button></div>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            
+
             <!-- Main Content -->
             <main class="main-content">
             <article data-theme="light">
@@ -135,10 +144,7 @@
                   <dt>Import</dt>
                   <dd><kbd>Shift</kbd> + <kbd>I</kbd></dd>
 
-                  <dt>Import</dt>
-                  <dd><kbd>Shift</kbd> + <kbd>I</kbd></dd>
-
-                  <dt>Export</dt>
+                  <dt>Play current level</dt>
                   <dd><kbd>Shift</kbd> + <kbd>E</kbd></dd>
 
                   <dt>Save</dt>
@@ -146,6 +152,7 @@
 
                   <dt>Zoom in</dt><dd><kbd>+</kbd></dd>
                   <dt>Zoom out</dt><dd><kbd>-</kbd></dd>
+                  <dt>Undo</dt><dd><kbd>ctrl</kbd>+<kbd>z</kbd></dd>
                 </dl>
             </div>
             </article>
@@ -167,7 +174,9 @@
 
     <img src="t.gif" style="display:none;" />
     <div class="status" id="status"></div>
-    <div id="map-info"></div>
+    <div id="map-info"></div>  .menu-btn:checked ~ .menu {
+    max-height: 240px;
+  }
 
 
 <script src="map/map.js"></script>
