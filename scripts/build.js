@@ -135,7 +135,7 @@ function uglifyBuildStep(filename)
 {
   console.log(`Running uglify...`);
   // child_process.execSync(`npx terser ${filename} -c -m -o ${filename}`, {stdio: 'inherit'});
-  child_process.execSync(`npx uglifyjs ${filename} -c -m reserved=[SHADOW,PAL,importLevel] -o ${filename}`, {stdio: 'inherit'});
+  child_process.execSync(`npx uglifyjs ${filename} -c -m reserved=[SHADOW,PAL,importLevel,toggleMute,mute] -o ${filename}`, {stdio: 'inherit'});
 };
 
 function roadrollerBuildStep(filename)
