@@ -1,5 +1,5 @@
 let mapData = [];
-let selectedTile = '0';
+let selectedTile = '1';
 let mapWidth = 10;
 let mapHeight = 10;
 let isMouseDown = false;
@@ -71,6 +71,7 @@ function renderMap() {
       tile.dataset.x = x;
       tile.dataset.y = y;
 
+
       // Mouse event handlers for painting
       tile.onmousedown = (e) => {
         e.preventDefault();
@@ -90,9 +91,25 @@ function renderMap() {
         isMouseDown = false;
       };
 
+      // Touch event handlers for painting
+      tile.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        isMouseDown = true;
+        isDragging = false;
+        placeTile(x, y);
+      }, { passive: false });
+
+      tile.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        isMouseDown = false;
+      }, { passive: false });
+
       grid.appendChild(tile);
     }
   }
+
 }
 
 // Place a tile at the specified coordinates
@@ -305,26 +322,27 @@ const undo = () => {
 }
 const redo = () => { }
 
-document.querySelector('.scale input').addEventListener('input', (e) => {
-  let scale = parseInt(e.target.value, 10) / 100;
-  const mapContainer = document.querySelector('.map-container');
+const mapContainer = document.querySelector('.map-container');
+const scaleInputEl = document.querySelector('.scale input');
+
+scaleInputEl.addEventListener('input', (e) => {
+  let scale = e.target.value;
+
   mapContainer.style.transform = `scale(${scale})`
   mapContainer.setAttribute('data-scale', scale);
-  console.log(scale);
 })
 
 addEventListener('keyup', (e) => {
 
   document.querySelectorAll('details').forEach((d => d.open = false))
   const modalOpen = document.documentElement.getAttribute('class') === 'modal-is-open';
-  const mapContainer = document.querySelector('.map-container');
-  let scale = mapContainer.getAttribute('data-scale') || 1;
-  scale = parseFloat(scale);
 
   if (e.code === 'Equal' || e.code === 'Minus') {
-    let factor = (e.code === 'Equal') ? 1.1 : 0.9;
-    scale *= factor;
+    let scale = getScaleValue(mapContainer);
+    console.log({scale});
+    scale += (e.code === 'Equal') ? .1 : -.1;;
     mapContainer.style.transform = `scale(${scale})`
+    scaleInputEl.value = scale;
     mapContainer.setAttribute('data-scale', scale);
   }
 
@@ -684,3 +702,22 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
   });
 });
+
+
+function getScaleValue(element) {
+  const style = window.getComputedStyle(element);
+  const transform = style.getPropertyValue('transform');
+
+  // Check if the transform value is a matrix
+  if (transform.startsWith('matrix(')) {
+    const matrixValues = transform.match(/matrix\(([^,]+),/);
+    
+    if (matrixValues && matrixValues.length > 1) {
+      // The scaleX value is the first value in the matrix
+      return parseFloat(matrixValues[1]);
+    }
+  }
+  
+  // Return a default scale of 1 if no transform is found
+  return 1;
+}
