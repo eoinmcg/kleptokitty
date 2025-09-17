@@ -1,34 +1,16 @@
 import D from './data';
-// import testLevel from './data/testlevel';
 import raw from './data/levels';
-import { makeLevel, favIcon, niceText } from './helpers';
+import { makeLevel, favIcon, niceText, injectCSS, createUI } from './helpers';
 import Msg from './entities/msg';
 import { musicInit, musicUpdate } from './muzak';
-import Intro from './entities/intro';
+import Button from './entities/button';
 import LevelComplete from './entities/levelComplete';
 
 document.title = D.title;
 tileFixBleedScale = .5;
 const levels = raw.split('+');
 
-const muteIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/></svg>';
-const mutedIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>';
-
-document.head.innerHTML += `<style>
-@font-face {
-  font-family: Slackey;
-  src: url(Slackey-Regular.ttf);
-}
-body{transition:opacity.5s}body.out{opacity:0}body.in{opacity:1}
-#mute { position: absolute; top: 15px; left: 15px; width: 32px; height: 32px; 
- background-image: url('data:image/svg+xml,${encodeURIComponent(muteIcon)}');
- 
-}
-#mute.muted { 
- background-image: url('data:image/svg+xml,${encodeURIComponent(mutedIcon)}');
-}
-#mute:hover { cursor: pointer; }
-</style>`;
+injectCSS();
 
 // Create SFX
 const sfx = {};
@@ -42,17 +24,29 @@ if (importLevel) {
   levels.unshift(importLevel.replace('i=', ''));
 }
 
+if (window.BUILD) {
+  setShowWatermark(false);
+}
 
 let player, clicked,
     score = 0,
     level = (importLevel && importLevel.length < 2) ? parseInt(importLevel, 10) : 0,
-    // level = 0,
     deaths = 0,
     mute = 0,
     gameOver = 0, ready = false, startTime;
 
+let uiRoot, uiMenu;
+
+const getMenuVisible =()=> uiMenu.visible;
+const setMenuVisible =(visible)=> uiMenu.visible = visible;
+
 const updateScore = (val = 10) => score += val;
 const setGameOver = (val) => { gameOver = val; deaths += 1; }
+const toggleMute = (val = !mute) => {
+  mute = val;
+  muteButton.className = mute ? 'muted' : '';
+  return mute;
+}
 
 const nextLevel = () => {
   level += 1;
@@ -97,7 +91,7 @@ function gameInit() {
 
   document.body.style.backgroundColor = '#333';
   favIcon();
-
+  
   const gameSize = vec2(D.width, D.height);
   setCanvasFixedSize(gameSize);
   setCanvasMaxSize(gameSize);
@@ -106,12 +100,24 @@ function gameInit() {
   cameraScale = 20;
   objectDefaultDamping = .7;
 
+  initUISystem();
+  let ui = createUI(toggleMute, mute);
+  uiRoot = ui.uiRoot;
+  uiMenu = ui.uiMenu;
+  window.uiMenu = uiMenu;
+
   if (importLevel) {
     startGame();
   }
+
+  new Button(cameraPos.add(vec2(5.5,10.5)), {
+    name: 'button', setMenuVisible
+  });
 }
 
 function gameUpdate() {
+
+  const showInfo = engineObjects.some(o => o.name === 'info');
   clicked = keyWasPressed('ArrowUp') || gamepadIsDown(2) || (mouseWasPressed(0) && mousePosScreen.y > 50);
 
   if (keyWasPressed('KeyM')) {
@@ -119,7 +125,7 @@ function gameUpdate() {
     muteButton.className = mute ? 'muted' : '';
   }
   
-  if (!ready && clicked) {
+  if (!ready && clicked && !showInfo) {
     ready = true;
     startGame();
     // new Intro({startGame});
@@ -145,8 +151,8 @@ function gameRender() {
 
   let c = new Color(0,.2,.3);
   
-  if (!ready) {
-    const ctx = mainContext;
+  const showInfo = engineObjects.some(o => o.name === 'info');
+  if (!ready && !showInfo) {
     let x = Math.sin(time*.2)*8;
     drawRect(vec2(D.center), vec2(20,30), new Color(.5,.5,1,.3), 0, false);
     drawTile(vec2(D.center).add(vec2(0,-2)), vec2(8), tile(0, 128, 1));
@@ -182,6 +188,18 @@ function gameRender() {
 }
 
 function gameRenderPost() {
+
+  // center ui
+  uiRoot.pos.x = mainCanvasSize.x/2;
+
+  // menu system
+  const menuVisible = getMenuVisible();
+  paused = menuVisible;
+
+  // toggle menu visibility
+  if (keyWasPressed('KeyI'))
+    setMenuVisible(!menuVisible);
+
   if(gameOver) {
     let a = (gameOver-time)*-.5;
     drawRect(cameraPos, vec2(24), new Color(1,0,0,clamp(a,0,.5)));
@@ -207,3 +225,4 @@ window.setTimeout(() => {
   document.body.appendChild(muteButton);
 
 });
+

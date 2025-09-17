@@ -1,10 +1,9 @@
-import Loot from './loot';
-
-export default class Intro extends EngineObject {
+export default class Info extends EngineObject {
 
   constructor(o) {
     super();
     Object.assign(this, o);
+    this.name = 'info';
     this.startTime = time;
     this.t = '';
     this.text = "If a black cat\n crosses your path,\n count your diamonds,\n for they may\n vanish by dawn";
@@ -34,3 +33,4 @@ export default class Intro extends EngineObject {
     drawTextOverlay(this.t, cameraPos, .8, BLACK, .3, YELLOW, 'center', 'Slackey')
   }
 }
+

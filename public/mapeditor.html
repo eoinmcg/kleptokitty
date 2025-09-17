@@ -49,11 +49,11 @@
               <article>
             <div class="legend">
                 <div class="tile-selector">
-                    <div class="tile-option selected" data-tile="0">
+                    <div class="tile-option" data-tile="0">
                         <div>Empty</div>
                         <div><span class="tile-0">0</span></div>
                     </div>
-                    <div class="tile-option" data-tile="1">
+                    <div class="tile-option selected" data-tile="1">
                         <div>Wall</div>
                         <div><span class="tile-1">1</span></div>
                     </div>
@@ -93,7 +93,7 @@
         <div class="scale">
           <div>
             <label for="zoom-range"><i data-lucide="zoom-in"></i></label>
-            <input id="zoom-range" type="range" min="20" max="200" step="10" />
+            <input id="zoom-range" type="range" min=".3" max="1.2" value=".7" step=".1" />
           </div>
           <div><button onclick="undo()" data-tooltip="Undo"><i data-lucide="undo"></i></button></div>
         </div>
@@ -104,7 +104,7 @@
 
             <!-- Main Content -->
             <main class="main-content">
-            <article data-theme="light">
+            <article da-gridta-theme="light">
               <div class="map-container" data-scale="1">
                   <div class="map-grid" id="mapGrid"></div>
               </div>

@@ -28,6 +28,7 @@ const PROGRAM_NAME = 'game';
 const BUILD_FOLDER = 'tmp';
 const sourceFiles = [
     'public/littlejs.release.js',
+    'public/uiSystem.js',
     'dist/game.js',
     'public/globals.js',
   ];

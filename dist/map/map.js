@@ -1,5 +1,5 @@
 let mapData = [];
-let selectedTile = '0';
+let selectedTile = '1';
 let mapWidth = 10;
 let mapHeight = 10;
 let isMouseDown = false;
@@ -71,6 +71,7 @@ function renderMap() {
       tile.dataset.x = x;
       tile.dataset.y = y;
 
+
       // Mouse event handlers for painting
       tile.onmousedown = (e) => {
         e.preventDefault();
@@ -90,9 +91,25 @@ function renderMap() {
         isMouseDown = false;
       };
 
+      // Touch event handlers for painting
+      tile.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        isMouseDown = true;
+        isDragging = false;
+        placeTile(x, y);
+      }, { passive: false });
+
+      tile.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        isMouseDown = false;
+      }, { passive: false });
+
       grid.appendChild(tile);
     }
   }
+
 }
 
 // Place a tile at the specified coordinates
@@ -250,11 +267,11 @@ function saveMap() {
 function showStatus(message, type) {
   const status = document.getElementById('status');
   status.textContent = message;
-  status.className = `status ${type}`;
+  status.className = `status ${type} show`;
   status.style.display = 'block';
 
   setTimeout(() => {
-    status.style.display = 'none';
+    status.classList.remove('show');
   }, 3000);
 }
 
@@ -305,26 +322,27 @@ const undo = () => {
 }
 const redo = () => { }
 
-document.querySelector('.scale input').addEventListener('input', (e) => {
-  let scale = parseInt(e.target.value, 10) / 100;
-  const mapContainer = document.querySelector('.map-container');
+const mapContainer = document.querySelector('.map-container');
+const scaleInputEl = document.querySelector('.scale input');
+
+scaleInputEl.addEventListener('input', (e) => {
+  let scale = e.target.value;
+
   mapContainer.style.transform = `scale(${scale})`
   mapContainer.setAttribute('data-scale', scale);
-  console.log(scale);
 })
 
 addEventListener('keyup', (e) => {
 
   document.querySelectorAll('details').forEach((d => d.open = false))
   const modalOpen = document.documentElement.getAttribute('class') === 'modal-is-open';
-  const mapContainer = document.querySelector('.map-container');
-  let scale = mapContainer.getAttribute('data-scale') || 1;
-  scale = parseFloat(scale);
 
   if (e.code === 'Equal' || e.code === 'Minus') {
-    let factor = (e.code === 'Equal') ? 1.1 : 0.9;
-    scale *= factor;
+    let scale = getScaleValue(mapContainer);
+    console.log({scale});
+    scale += (e.code === 'Equal') ? .1 : -.1;;
     mapContainer.style.transform = `scale(${scale})`
+    scaleInputEl.value = scale;
     mapContainer.setAttribute('data-scale', scale);
   }
 
@@ -391,6 +409,7 @@ loadLevels()
     });
     document.querySelector('ul.levels').innerHTML = html;
     document.querySelector('ul.levels').addEventListener('click', (e) => {
+      e.preventDefault();
       let prev = currentlyEditing;
       let mapCopy = [...mapData];
       let mapArray = JSON.stringify(mapCopy.reverse().join('-'), null, 2)+',';
@@ -455,7 +474,7 @@ img.onload = () => {
     makeImage(img, t, x, y);
   }
 };
-img.src = 't.gif';
+img.src = 'map_t.gif';
 
 window.setTimeout(() => {
   document.querySelector('.tile-option[data-tile="P"]')
@@ -581,3 +600,124 @@ document.querySelector('#settings-modal form')
     return false;
   }, false);
 
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const draggable = document.querySelector('.draggable');
+  const dragHandle = draggable.querySelector('.drag-handle');
+
+  let isDragging = false;
+  let offsetX, offsetY;
+
+  // Function to get event coordinates
+  function getCoords(e) {
+    if (e.touches) {
+      return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+    return { x: e.clientX, y: e.clientY };
+  }
+
+  // Mouse/Touch down handler
+  const startDrag = (e) => {
+    isDragging = true;
+    draggable.classList.add('is-dragging');
+    draggable.setAttribute('aria-grabbed', 'true');
+
+    // Calculate the initial offset from the pointer to the element's top-left corner
+    const coords = getCoords(e);
+    offsetX = coords.x - draggable.getBoundingClientRect().left;
+    offsetY = coords.y - draggable.getBoundingClientRect().top;
+  };
+
+  // Mouse/Touch move handler
+  const drag = (e) => {
+    if (!isDragging) return;
+    
+    // Prevent default to avoid selection and scrolling issues on mobile
+    e.preventDefault();
+
+    const coords = getCoords(e);
+
+    // Calculate new position relative to the viewport
+    let newX = coords.x - offsetX;
+    let newY = coords.y - offsetY;
+
+    // Apply the new position
+    draggable.style.left = `${newX}px`;
+    draggable.style.top = `${newY}px`;
+  };
+
+  // Mouse/Touch up handler
+  const endDrag = () => {
+    isDragging = false;
+    draggable.classList.remove('is-dragging');
+    draggable.setAttribute('aria-grabbed', 'false');
+  };
+
+  // Add event listeners for both mouse and touch events
+  dragHandle.addEventListener('mousedown', startDrag);
+  dragHandle.addEventListener('touchstart', startDrag);
+
+  document.addEventListener('mousemove', drag);
+  document.addEventListener('touchmove', drag, { passive: false });
+
+  document.addEventListener('mouseup', endDrag);
+  document.addEventListener('touchend', endDrag);
+
+  // Keyboard accessibility for dragging
+  let isKeyboardDragging = false;
+  draggable.addEventListener('keydown', (e) => {
+    if (e.key === ' ' || e.key === 'Enter') {
+      isKeyboardDragging = !isKeyboardDragging;
+      draggable.setAttribute('aria-grabbed', isKeyboardDragging);
+      e.preventDefault();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!isKeyboardDragging) return;
+
+    let { top, left } = draggable.getBoundingClientRect();
+    const moveAmount = 10;
+
+    switch (e.key) {
+      case 'ArrowUp':
+        top -= moveAmount;
+        break;
+      case 'ArrowDown':
+        top += moveAmount;
+        break;
+      case 'ArrowLeft':
+        left -= moveAmount;
+        break;
+      case 'ArrowRight':
+        left += moveAmount;
+        break;
+      default:
+        return;
+    }
+
+    draggable.style.left = `${left}px`;
+    draggable.style.top = `${top}px`;
+    e.preventDefault();
+  });
+});
+
+
+function getScaleValue(element) {
+  const style = window.getComputedStyle(element);
+  const transform = style.getPropertyValue('transform');
+
+  // Check if the transform value is a matrix
+  if (transform.startsWith('matrix(')) {
+    const matrixValues = transform.match(/matrix\(([^,]+),/);
+    
+    if (matrixValues && matrixValues.length > 1) {
+      // The scaleX value is the first value in the matrix
+      return parseFloat(matrixValues[1]);
+    }
+  }
+  
+  // Return a default scale of 1 if no transform is found
+  return 1;
+}

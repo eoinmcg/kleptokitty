@@ -320,7 +320,7 @@ details[role="list"] summary + ul li a:hover { background: rgba(255,255,255,0.2)
 
 /* Map  ---------------------------- */
 .map-container {
-  transform: scale(.75);
+  transform: scale(.7);
   transform-origin: top center;
   min-height: 100%;
 }
