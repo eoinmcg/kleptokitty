@@ -104,7 +104,6 @@ function gameInit() {
   let ui = createUI(toggleMute, mute);
   uiRoot = ui.uiRoot;
   uiMenu = ui.uiMenu;
-  window.uiMenu = uiMenu;
 
   if (importLevel) {
     startGame();
