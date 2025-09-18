@@ -183,32 +183,36 @@ details[role="list"] summary + ul li a:hover { background: rgba(255,255,255,0.2)
   margin-left: auto;
   margin-right: auto;
   margin-top: 5px;
-    gap: 5px;
+  gap: 5px;
+  display: flex;
+  align-items: center;
 }
 
 .scale > div {
-  margin-bottom: var(--spacing); /* Add spacing between vertically stacked items */
+  margin-bottom: var(--spacing);
 }
 
-.scale button { background: transparent; border: 1px solid rgba(0,0,0,0.2); padding: .5rem; color: #777; }
+.scale button {
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.2);
+  padding: .5rem;
+  color: #777;
+}
 
-/* Center and adjust spacing on larger screens */
 @media (min-width: 768px) {
   .scale {
-    display: flex;
     justify-content: center;
-    align-items: center;
   }
   
   .scale > div {
-    margin-bottom: 0; /* Remove vertical spacing on larger screens */
+    margin-bottom: 0;
   }
-
+  
   /* Make the zoom container take up the available space */
   .scale > div:first-child {
     flex-grow: 1;
   }
-
+  
   /* Adjust spacing between the zoom components and buttons */
   .scale > div:first-child label {
     margin-right: var(--spacing);
@@ -223,8 +227,9 @@ details[role="list"] summary + ul li a:hover { background: rgba(255,255,255,0.2)
 
 /* Toolbar */
 /* .toolbar { background: #00426f; } */
-.toolbar { position: fixed; left: 0; top: 6rem; width: 50px; 
-  z-index: 99999; }
+.toolbar { position: fixed; left: 0; top: 6rem; width: 50px;
+  z-index: 99998;
+}
 .toolbar article { background: transparent; box-shadow: none; margin: 0; padding: 5px 5px 5px 0; }
 .draggable {
   position: fixed;
@@ -398,6 +403,7 @@ button:active {
   border-radius: 5px;
   opacity: 0;
   transition: opacity .5s ease;
+  z-index: 99999;
 }
 
 .status.show { opacity: 1; }

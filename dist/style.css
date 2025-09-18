@@ -169,6 +169,55 @@ border-top: 1px solid rgba(0,0,0,.5);
 
 #tweet_me { position: absolute; top: 1em; left: 1em; }
 
+.copyright {
+    margin: 0 0 15px 0;
+    color: #fff;
+    font-size: 14px;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    transform: translateY(-2px);
+}
+
+.social-links a.github:hover {
+    color: #333;
+    background: #f6f8fa;
+}
+
+.social-links a.twitter:hover {
+    color: #1da1f2;
+    background: #e8f5fd;
+}
+
+.social-links a.bluesky:hover {
+    color: #00a8e8;
+    background: #e6f7ff;
+}
+
+.social-links svg {
+    width: 24px;
+    height: 24px;
+}
+
 @media (max-width: 409px) {
   h1 { font-size: 2.3em; }
   h2 { font-size: 2em; }
@@ -196,4 +245,8 @@ border-top: 1px solid rgba(0,0,0,.5);
 @media (min-width: 992px) {
   #arcade { width: 600px; }
 }
-
+@media (max-width: 480px) {
+    .social-links { gap: 25px; }
+    .social-links a { width: 44px; height: 44px; }
+    .social-links svg { width: 26px; height: 26px; }
+}
