@@ -12,6 +12,7 @@ export default class Button extends EngineObject {
     this.hoverColor = new Color(0,0,0);
     this.setCollision(true);
 
+
     const pointerExists = engineObjects.some(o => o.name === 'pointer');
     if (!pointerExists) {
       new Pointer();
@@ -26,6 +27,7 @@ export default class Button extends EngineObject {
       document.body.classList.remove('hover');
     }
     if (mouseWasPressed(0) && this.hover) {
+      this.sfx.ui.play();
       this.setMenuVisible(true);
     }
     this.wasHover = this.hover;

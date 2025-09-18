@@ -119,7 +119,7 @@ function gameInit() {
   }
 
   new Button(cameraPos.add(vec2(5.5,10.5)), {
-    name: 'button', setMenuVisible
+    name: 'button', setMenuVisible, sfx
   });
 }
 
