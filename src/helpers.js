@@ -120,22 +120,25 @@ body{transition:opacity.5s}body.out{opacity:0}body.in{opacity:1}
 .hover{cursor: pointer;}
 #mute { position: absolute; top: 15px; left: 15px; width: 32px; height: 32px;
 background-image: url('data:image/svg+xml,${encodeURIComponent(muteIcon)}');
-
+z-index: 99999;
 }
-#mute.muted { 
+#mute.muted {
 background-image: url('data:image/svg+xml,${encodeURIComponent(mutedIcon)}');
 }
 #mute:hover { cursor: pointer; }
 </style>`;
+
+  window.setTimeout(() => {
+    document.body.style.alignItems = 'start'
+  }, 500);
+
 }
 
-export function createUI(toggleMute, mute) {
+export function aboutUI(toggleMute, mute) {
 
   const uiRoot = new UIObject();
 
   const sound_ui = new Sound([1,0]);
-  const w = mainCanvasSize.x,
-  h = mainCanvasSize.y;
 
   // setup example menu
   const uiMenu = new UIObject(vec2(D.width/2,D.height/2), vec2(.5));

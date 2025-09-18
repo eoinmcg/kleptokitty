@@ -26,10 +26,10 @@ export default class Player extends Sprite {
     const oldDir = this.dir.copy();
     if (!moving && (!this.dir.x || !this.dir.y)) {
       let gamepad = gamepadStick(0);
-      if (gamepad.x < 0 || keyWasPressed('ArrowRight') || d == 'right') this.dir = vec2(1, 0);
-      else if (gamepad.x > 0 || keyWasPressed('ArrowLeft') || d == 'left') this.dir = vec2(-1, 0);
-      else if (gamepad.y < 0 || keyWasPressed('ArrowUp') || d == 'up') this.dir = vec2(0, 1);
-      else if (gamepad.y > 0 || keyWasPressed('ArrowDown') || d == 'down') this.dir = vec2(0, -1);
+      if (gamepad.x > 0 || keyWasPressed('ArrowRight') || d == 'right') this.dir = vec2(1, 0);
+      else if (gamepad.x < 0 || keyWasPressed('ArrowLeft') || d == 'left') this.dir = vec2(-1, 0);
+      else if (gamepad.y > 0 || keyWasPressed('ArrowUp') || d == 'up') this.dir = vec2(0, 1);
+      else if (gamepad.y < 0 || keyWasPressed('ArrowDown') || d == 'down') this.dir = vec2(0, -1);
     }
     if (oldDir.x !== this.dir.x || oldDir.y !== this.dir.y) {
       this.moves += 1;

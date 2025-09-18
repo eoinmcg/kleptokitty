@@ -1,6 +1,6 @@
 import D from './data';
 import raw from './data/levels';
-import { makeLevel, favIcon, niceText, injectCSS, createUI } from './helpers';
+import { makeLevel, favIcon, niceText, injectCSS, aboutUI } from './helpers';
 import Msg from './entities/msg';
 import { musicInit, musicUpdate } from './muzak';
 import Button from './entities/button';
@@ -19,18 +19,27 @@ for (const key in D.sfx) sfx[key] = new Sound(D.sfx[key]);
 // setGlEnable(true);
 
 
-const importLevel = location.href.split('?')[1];
+// check if level imported via URL string
+let startLevel = 0;
+let importLevel = location.href.split('?i=')[1];
 if (importLevel) {
-  levels.unshift(importLevel.replace('i=', ''));
+  console.log('import', importLevel);
+    if (importLevel.length > 3) {
+      levels.unshift(importLevel);
+    } else {
+      startLevel = parseInt(importLevel, 10);
+      importLevel = false;
+  }
 }
 
+setShowWatermark(false);
 if (window.BUILD) {
   setShowWatermark(false);
 }
 
 let player, clicked,
     score = 0,
-    level = (importLevel && importLevel.length < 2) ? parseInt(importLevel, 10) : 0,
+    level = startLevel,
     deaths = 0,
     mute = 0,
     gameOver = 0, ready = false, startTime;
@@ -101,11 +110,11 @@ function gameInit() {
   objectDefaultDamping = .7;
 
   initUISystem();
-  let ui = createUI(toggleMute, mute);
+  let ui = aboutUI(toggleMute, mute);
   uiRoot = ui.uiRoot;
   uiMenu = ui.uiMenu;
 
-  if (importLevel) {
+  if (importLevel || startLevel > 0) {
     startGame();
   }
 
@@ -153,9 +162,9 @@ function gameRender() {
   const showInfo = engineObjects.some(o => o.name === 'info');
   if (!ready && !showInfo) {
     let x = Math.sin(time*.2)*8;
-    drawRect(vec2(D.center), vec2(20,30), new Color(.5,.5,1,.3), 0, false);
-    drawTile(vec2(D.center).add(vec2(0,-2)), vec2(8), tile(0, 128, 1));
-    drawTile(vec2(D.center).add(vec2(x,0)), vec2(30), tile(0, 512, 2), new Color(0,.1,.25));
+    drawRect(D.center, vec2(20,30), new Color(.5,.5,1,.3));
+    drawTile(D.center.add(vec2(0,-2)), vec2(8), tile(0, 128, 1));
+    drawTile(D.center.add(vec2(x,0)), vec2(30), tile(0, 512, 2), new Color(0,.1,.25));
 
 
 
@@ -214,14 +223,12 @@ window.setTimeout(() => {
 
   muteButton = document.createElement('div');
   muteButton.id = 'mute';
-  muteButton.addEventListener('click', (e) => {
-      e.preventDefault();
+  muteButton.addEventListener('pointerdown', () => {
       mute = !mute;
-      console.log({mute})
       muteButton.className = mute ? 'muted' : '';
       return false;
   }, false);
-  document.body.appendChild(muteButton);
+  document.body.prepend(muteButton);
 
-});
+}, 1000);
 

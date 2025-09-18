@@ -44,6 +44,8 @@ const dataFiles = Data.tiles.map(tile => `public/${tile}`);
 dataFiles.push('public/Slackey-Regular.ttf');
 dataFiles.push('public/mapeditor.html');
 dataFiles.push('public/postmortem.html');
+dataFiles.push('public/style.css');
+dataFiles.push('public/map_t.gif');
 
 console.log(``);
 chalkSuccess(` Building ${Data.title}... `, '🛠️');
@@ -68,6 +70,7 @@ mapeditor = mapeditor.replace('</head>', '<script>window.BUILD=true</script></he
 fs.writeFileSync(`${BUILD_FOLDER}/mapeditor.html`, mapeditor);
 
 fs.cpSync('public/map', `${BUILD_FOLDER}/map`, {recursive: true});
+fs.cpSync('public/vids', `${BUILD_FOLDER}/vids`, {recursive: true});
 
 Build
   (
@@ -189,6 +192,7 @@ function zipBuildStep()
   // cleanup - remove tmp and rename to dist for gh-pages
   fs.rmSync('dist', { recursive: true, force: true });
   fs.renameSync('tmp', 'dist')
+  fs.rmSync('dist/index.js');
 }
 
 

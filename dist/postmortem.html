@@ -1,1 +1,312 @@
-<h1>Coming Soon...</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+
+<title>KleptoKitty - A post mortem</title>
+
+<meta name="description" content="Post mortem of an entry to a javascript game jam." />
+<meta name="author" content="Eoin McGrath" />
+
+<link href="style.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+</head>
+
+<body>
+
+<div class="post" id="arcade">
+
+<h1> KleptoKitty </h1>
+<h2> A Post Mortem </h2>
+
+
+<h3> The Background </h3>
+<p>
+      <img src="mugshot.png" class="right" />
+Every year when 13th August rolls round developers from across 
+the globe put away unfinished side projects to start something new.
+Namely the <a href="https://js13kgames.com">js13k game jam</a> - an annual challenge to create
+a javascript game in under 13k or under (zipped). Running from
+13th Aug to 13th September for the past 14 years it has gained
+something of a cult following and spawned some amazing games.
+</p>
+
+<video controls>
+  <!-- <source src="vids/level1.webm" type="video/webm" /> -->
+  <source src="vids/level1.webm" type="video/webm" />
+</video>
+
+<h3> The Beginning </h3>
+<p>
+      When this year theme 'Black Cat', dropped I was pretty excited
+and had a few compelling ideas. However, life and other commitments
+meant I was unable to make a start until the final week. Nothing
+like a tight deadline and a small game to get motivated. Previous
+years I rolled my own game engine but in the interests of variety,
+I opted for a pre-made engine - 
+<a href="https://github.com/KilledByAPixel/LittleJS">LittleJS</a>.
+It's battle tested, performant and I had some 
+<a href="https://www.newgrounds.com/portal/view/960757">experience with it in the past</a>.
+</p>
+
+
+<h3>The Idea</h3>
+<p>
+Recently, I have been re-playing some old classics such as Mark of the Ninja
+and Tomb of the Mask to name a few. These influences pushed me towards
+stealth combined with the slick controls and dopamine explosions of Tomb of the Mask.
+Given the theme, our hero was predestined to be a black cat. I settled on
+the idea of sneaking around a mansion accruing loot, avoiding guards and traps.
+</p>
+
+<h3> The Prototype </h3>
+<p>
+LittleJS allowed me to knock out a basic game in a couple of hours. It's super
+efficient 2d map system saved me re-inventing the wheel and after
+some caffine fuelled keyboard bashing I had come up with this:
+[screenshot]
+</p>
+
+<p>
+I then added some bling;
+<ul class="boom">
+  <li>run particles with the built-in 
+    <a href="https://killedbyapixel.github.io/LittleJS/examples/particles/">particle system</a>
+  </li>
+  <li>glimmer on the diamond by superimposing a few shapes</li>
+  <li>simple blur trail related to speed</li>
+</ul>
+</p>
+
+<p>
+        <figure class="image-wrap transparent">
+          <img src="t.gif" width="100%">
+          <figcaption>8x8 tile set, weighing in at a measly 301bytes</figcaption>
+      </figure>
+</p>
+
+<p>
+      LittleJS makes coloring image tiles super simple so I was able to get a lot
+      of extra mileage by simply coloring white tiles. This worked well for creating
+      vibrant wall tiles and the multicolored diamonds.
+      <img src="vids/loot.png" />
+</p>
+
+<h3> The Muzak </h3>
+<p>
+Good tunes are a really important component of a fun game. Not being
+musically, inclined I turned to AI for a helping hand. I wanted
+a jazzy track, along the lines of the Pink Panther. Claude.ai did its best!
+</p>
+<p>
+<b>Note:</b> As a starting point I was inspired by this wonderful 
+<a href="https://github.com/repsej/TheWayOfTheDodo">postmortem</a>.
+<br />Basically, the lightweight <a href="https://keithclark.github.io/ZzFXM/">ZzFXM</a>
+coupled with basic patterns which are then randomized.
+</p>
+
+<h3>The Problems</h3>
+<p>
+At this point it seemed all was going well and at full speed. The next
+major task would be to design fun and engaging levels. And this is where
+the wheels came off, a bit. Rather than focus on this new challenge, I
+decided that a level editor would be beneficial in the long run. So,
+I proceeded to eat into my dwindling time budget by making a level editor:
+<img src="vids/mapeditor.png" alt="The Map Editor">
+(Note to self: make games not tools!)
+</p>
+
+<p>
+To be honest, it was a big help but I wasn't left with much time to
+work on level design. Ultimately, I opted for what was easier (coding)
+at the expense of levels. One positive, though is that the
+<a href="https://eoinmcgrath.com/kleptokitty/mapeditor.html">level editor</a>
+is built into the 'Directors cut' version. You can even share
+your level designs via URL.
+</p>
+
+<h3> The Build </h3>
+<p>
+A tedious part of any front end project / game jam is building, compressing
+and deploying the dang thing. Luckily, I had concocted a small 
+<a href="https://www.npmjs.com/package/create-js13k-littlejs">npm package</a>
+earlier in the summer to handle all this:
+<code>
+npm create js13k-littlejs
+</code>
+</p>
+
+<p>
+It includes a dev server with hot reloading, deploy to github pages 
+and automated build and zipping (using the amazing 
+<a href="https://github.com/lifthrasiir/roadroller">
+Roadroller</a>)
+There is even has a built in animated gif recorder.
+</p>
+
+
+<h3> The Positives </h3>
+<p>
+<ul class="good">
+  <li> Using LittleJS, a lot of the heavy lifting was already done</li>
+  <li> Reusing sfx and some gfx from previous games saved time</li>
+  <li> Getting to make a game! What could be more fun?</li>
+</ul>
+</p>
+
+
+<h3> The Negatives </h3>
+<p>
+<ul class="bad">
+
+<li> Spending too much time messing with the level editor</li>
+<li> Starting in the final week </li>
+<li> Not having play testers</li>
+</ul>
+</p>
+
+
+<hr />
+
+<p>
+If you've got this far, thanks and what are you waiting for?
+Go play the game:
+</p>
+
+<p>
+  <a href="https://js13kgames.com/2025/games/kleptokitty">
+        🕹️Jam Entry
+  </a>
+</p>
+
+<p>
+  <a href="https://github.com/eoinmcg/kleptokitty">
+         😾 Updated version
+  </a>
+</p>
+
+<p>
+  <a href="https://github.com/eoinmcg/kleptokitty">
+        💻 Source Code
+  </a>
+</p>
+
+	
+</div>
+
+
+<footer>
+&copy; <a href="http://twitter.com/eoinmcg">@eoinmcg</a>
+      <div class="cactus"></div>
+</footer>
+
+
+<script>
+// document.body.className = 'loading';
+document.addEventListener("DOMContentLoaded", (event) => {
+  generateGridPattern();
+  document.querySelectorAll('#arcade a').forEach((link) => {
+    link.setAttribute('target', '_blank');
+  });
+
+  // window.setTimeout(() => {
+  //   document.body.className = '';
+  //   window.scrollTo(0, 0);
+  //   initAnimate();
+  // }, 300);
+
+  const initAnimate = () => {
+    let images = document.querySelectorAll('.animate img');
+    let animations = {};
+    images.forEach((i) => {
+      const w = i.naturalWidth;
+      if (w > 8) {
+        let name = i.src.split('/').pop()
+        .replace('.gif', '');
+        i.dataset.name = name;
+        animations[`${name}_0`] = drawImage(i);
+        animations[`${name}_1`] = drawImage(i, (w / 2) * -1);
+        i.src = animations[`${name}_0`];
+        i.dataset.frame = 0;
+      }
+    });
+
+    window.setInterval(() => {
+      document.querySelectorAll('.animate img[data-frame]')
+        .forEach((el) => {
+          let name = el.dataset.name;
+          let frame = parseInt(el.dataset.frame, 10) === 0
+           ? 1 : 0;
+          el.dataset.frame = frame;
+          el.src = animations[`${el.dataset.name}_${frame}`];
+        });
+    }, 2000);
+  }
+
+  const drawImage = (i, xOff = 0) => {
+    let w = i.naturalWidth / 2,
+        h = i.naturalHeight;
+    let c = mkCanvas(w, h);
+    let ctx = c.getContext('2d');
+    ctx.drawImage(i, xOff, 0);
+
+    return c.toDataURL('image/png');
+  }
+
+  const mkCanvas = (w, h) => {
+    const c = document.createElement("canvas");
+    const ctx = c.getContext("2d");
+    c.width = w;
+    c.height = h;
+
+    ctx.imageSmoothingEnabled = false;
+
+    return c;
+  }
+
+});
+
+function generateGridPattern() {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    const gridSize = 6;
+    const squareSize = 512;
+    const canvasSize = gridSize * squareSize;
+    
+    canvas.width = canvasSize;
+    canvas.height = canvasSize;
+    
+    for (let row = 0; row < gridSize; row++) {
+        for (let col = 0; col < gridSize; col++) {
+            const x = col * squareSize;
+            const y = row * squareSize;
+
+            const choice = Math.floor(Math.random() * 3);
+
+            if (choice !== 0) {
+                const opacity = Math.random() * 0.05;
+                const color = choice === 1 ? 'white' : 'black';
+                ctx.fillStyle = `rgba(${choice === 1 ? '255,255,255' : '0,0,0'}, ${opacity})`;
+                ctx.fillRect(x, y, squareSize, squareSize);
+            }
+        }
+    }
+    
+    const dataUrl = canvas.toDataURL();
+    document.body.style.backgroundImage = `url(${dataUrl})`;
+    document.body.style.backgroundRepeat = 'repeat';
+}
+ 
+
+</script>
+
+
+</body>
+</html>
