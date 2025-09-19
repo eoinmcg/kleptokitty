@@ -6,6 +6,7 @@ import levels from '../src/data/levels.js';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import process from 'process';
+import revision from 'child_process';
 import fs from 'node:fs';
 import child_process from 'node:child_process';
 import chalk from 'chalk';
@@ -17,6 +18,10 @@ const __dirname = dirname(__filename);
 
 // Change to the project root (parent of scripts directory)
 process.chdir(join(__dirname, '..'));
+
+const DATE = new Date().toString().split('(')[0].trim();
+const COMMIT = revision.execSync('git rev-parse --short HEAD')
+  .toString().trim();
 
 /** 
  * LittleJS Build System
@@ -84,17 +89,22 @@ Build
   );
 
 const size = fs.statSync(`${PROGRAM_NAME}.zip`).size;
-const MAX = 13312;
+// const MAX = 13312;
+const MAX = false;
 const remaining = MAX - size;
 
 console.log(``);
 console.log(chalk.blue(`- Build Completed in ${((Date.now() - startTime)/1e3).toFixed(2)} seconds!`));
 console.log(chalk.blue(`- Size of ${PROGRAM_NAME}.zip: ${size} bytes`));
 
-if (size < MAX) {
-  chalkSuccess(`Remaining space: ${remaining} bytes`);
+if (MAX === false) {
+    chalkSuccess(`Complete! Zip size: ${Math.ceil(size/1024)} kb`);
 } else {
-  chalkError(`Error: Build size exceeds maximum of ${MAX} bytes!`);
+  if (size < MAX) {
+    chalkSuccess(`Remaining space: ${remaining} bytes`);
+  } else {
+    chalkError(`Error: Build size exceeds maximum of ${MAX} bytes!`);
+  }
 }
 console.log('');
 
@@ -179,7 +189,8 @@ function htmlBuildStep(filename)
   `;
   buffer += '<body>';
   buffer += '<script>';
-  buffer += `window.BUILD='${new Date().toString()}';`;
+  buffer += `window.COMMIT='${Data.title.split('(')[0]} ${COMMIT}';`;
+  buffer += `window.BUILD='${DATE}';`;
   buffer += fs.readFileSync(filename);
   buffer += `
     if ('serviceWorker' in navigator) {

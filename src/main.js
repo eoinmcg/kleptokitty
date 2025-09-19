@@ -1,3 +1,4 @@
+import { version } from '../package.json';
 import D from './data';
 import raw from './data/levels';
 import { makeLevel, favIcon, niceText, injectCSS, aboutUI } from './helpers';
@@ -34,9 +35,10 @@ if (importLevel) {
 
 if (typeof BUILD === 'undefined') {
   setShowWatermark(true);
-  console.log('dev version');
+  console.log(D.title + ' v: ' + version);
 } else {
-  console.log(`Build: ${BUILD}`);
+  console.log(`${COMMIT}`);
+  console.log(`Built: ${BUILD}`);
   setShowWatermark(false);
 }
 
