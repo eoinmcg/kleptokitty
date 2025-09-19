@@ -1,7 +1,7 @@
 {
   "name": "KleptoKitty",
   "short_name": "KleptoKitty",
-  "start_url": "/",
+  "start_url": "/kleptokitty/",
   "display": "fullscreen",
   "orientation": "landscape",
   "background_color": "#003366",
