@@ -3,7 +3,7 @@
   "short_name": "KleptoKitty",
   "start_url": "/kleptokitty/",
   "display": "fullscreen",
-  "orientation": "landscape",
+  "orientation": "portrait",
   "background_color": "#003366",
   "theme_color": "#ff70c5",
   "icons": [
