@@ -1,6 +1,6 @@
 import D from './data';
 import raw from './data/levels';
-import { makeLevel, favIcon, niceText, injectCSS, aboutUI, registerSW } from './helpers';
+import { makeLevel, favIcon, niceText, injectCSS, aboutUI } from './helpers';
 import Msg from './entities/msg';
 import { musicInit, musicUpdate } from './muzak';
 import Button from './entities/button';
@@ -32,10 +32,12 @@ if (importLevel) {
   }
 }
 
-setShowWatermark(false);
-if (window.BUILD) {
+if (typeof BUILD === 'undefined') {
+  setShowWatermark(true);
+  console.log('dev version');
+} else {
+  console.log(`Build: ${BUILD}`);
   setShowWatermark(false);
-  registerSW();
 }
 
 let player, clicked,

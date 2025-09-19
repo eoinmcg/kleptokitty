@@ -1,27 +1,39 @@
 const CACHE_NAME = 'kleptokitty-v1.0.0';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/t.gif',
-  '/map_t.gif',
-  '/spotlight.png',
-  '/mugshot.png',
-  '/Slackey-Regular.ttf',
-  '/mapeditor.html',
-  '/map/map.css',
-  '/map/map.js',
-  '/vids/mapeditor.png',
-  '/vids/transparent.png',
-  '/vids/loot.png',
-  '/vids/level1.webm',
+  '',
+  'index.html',
+  'style.css',
+  't.gif',
+  'map_t.gif',
+  'spotlight.png',
+  'mugshot.png',
+  'Slackey-Regular.ttf',
+  'mapeditor.html',
+  'map/map.css',
+  'map/map.js',
+  'vids/mapeditor.png',
+  'vids/transparent.png',
+  'vids/loot.png',
+  'vids/level1.webm',
 ];
 
 // Install event - cache resources
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then(cache => {
+      return Promise.allSettled(
+        urlsToCache.map(url => 
+          fetch(url).then(response => {
+            if (response.status === 200) {
+              return cache.put(url, response);
+            }
+            console.warn(`Skipping ${url} - status: ${response.status}`);
+          }).catch(err => {
+            console.warn(`Failed to cache ${url}:`, err);
+          })
+        )
+      );
+    })
   );
 });
 

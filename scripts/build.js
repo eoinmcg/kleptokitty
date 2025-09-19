@@ -73,7 +73,7 @@ fs.writeFileSync(`${BUILD_FOLDER}/mapeditor.html`, mapeditor);
 
 fs.cpSync('public/map', `${BUILD_FOLDER}/map`, {recursive: true});
 fs.cpSync('public/vids', `${BUILD_FOLDER}/vids`, {recursive: true});
-fs.cpSync('public/icons', `${BUILD_FOLDER}/vids`, {recursive: true});
+fs.cpSync('public/icons', `${BUILD_FOLDER}/icons`, {recursive: true});
 
 Build
   (
@@ -179,8 +179,20 @@ function htmlBuildStep(filename)
   `;
   buffer += '<body>';
   buffer += '<script>';
-  buffer += 'window.BUILD=true;';
+  buffer += `window.BUILD='${new Date().toString()}';`;
   buffer += fs.readFileSync(filename);
+  buffer += `
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(registration => {
+            console.log('SW registered: ', registration);
+          })
+          .catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }`;
   buffer += '</script>';
   buffer += '</body></html>';
 
