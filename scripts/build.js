@@ -174,7 +174,7 @@ function htmlBuildStep(filename)
 
     <title>KleptoKitty</title>
 
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#003366">
   `;
   buffer += '<body>';
