@@ -46,6 +46,8 @@ dataFiles.push('public/mapeditor.html');
 dataFiles.push('public/postmortem.html');
 dataFiles.push('public/style.css');
 dataFiles.push('public/map_t.gif');
+dataFiles.push('public/sw.js');
+dataFiles.push('public/manifest.json');
 
 console.log(``);
 chalkSuccess(` Building ${Data.title}... `, '🛠️');
@@ -71,6 +73,7 @@ fs.writeFileSync(`${BUILD_FOLDER}/mapeditor.html`, mapeditor);
 
 fs.cpSync('public/map', `${BUILD_FOLDER}/map`, {recursive: true});
 fs.cpSync('public/vids', `${BUILD_FOLDER}/vids`, {recursive: true});
+fs.cpSync('public/icons', `${BUILD_FOLDER}/vids`, {recursive: true});
 
 Build
   (
@@ -158,14 +161,28 @@ function roadrollerExtremeBuildStep(filename)
 function htmlBuildStep(filename)
 {
   console.log(`Building html...`);
-
   // create html file
   let buffer = '';
+  buffer += `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+
+    <meta charset="UTF-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+
+    <title>KleptoKitty</title>
+
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#003366">
+  `;
   buffer += '<body>';
   buffer += '<script>';
   buffer += 'window.BUILD=true;';
   buffer += fs.readFileSync(filename);
   buffer += '</script>';
+  buffer += '</body></html>';
 
   // output html	 file
   fs.writeFileSync(`${BUILD_FOLDER}/index.html`, buffer, {flag: 'w+'});

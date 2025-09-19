@@ -10,7 +10,6 @@ body {
   font-family: 'Droid Sans', Helvetica, Arial, sans-serif;
   background-color: #036;
   background-attachment: fixed;
-  background-size: 600px;
   image-rendering: pixelated;
   overflow-x: hidden;
 }
@@ -54,7 +53,7 @@ h3 {
 
 p img.right { float: right; margin: 0; width: 40%; }
 p img.left { float: left; margin: 0; width: 40%; }
-img { max-width: 80%; margin: 2rem auto; }
+img { max-width: 100%; margin: 2rem auto; }
 div.imgs img {
   display: inline-block !important;
   padding-right: 3rem;
@@ -140,7 +139,7 @@ footer .cat {
 }
 
 .image-wrap { 
-  background: #000; width: 90%; margin: 1rem auto; border: 1px solid rgba(1,1,1); 
+  background: #000; width: 100%; margin: 1rem auto; border: 1px solid rgba(1,1,1); 
   box-shadow: 0 5px 2px -2px rgba(0, 0, 0, .4);
 }
 
@@ -218,35 +217,11 @@ border-top: 1px solid rgba(0,0,0,.5);
     height: 24px;
 }
 
-@media (max-width: 409px) {
+@media (max-width: 480px) {
   h1 { font-size: 2.1em; }
   h2 { font-size: 1.9rem; }
   h3 { font-size: 1.8rem; }
-}
-@media (min-width: 320px) {
-  #arcade { width: 260px; }
-  div.imgs.big img { width: 26px; }
-}
-@media (min-width: 360px) {
-  #arcade { width: 300px; }
-  div.imgs.big img { width: 40px; }
-}
-@media (min-width: 410px) {
-  #arcade { width: 350px; }
-  div.imgs.big img { width: 50px; }
-  h1 { font-size: 2.6em; }
-  h2 { font-size: 2em; }
-  h3 { font-size: 1.8rem; }
-}
-@media (min-width: 768px) {
-  #arcade { width: 600px; }
-  div.imgs.big img { width: 50px; }
-}
-@media (min-width: 992px) {
-  #arcade { width: 600px; }
-}
-@media (max-width: 480px) {
-    .social-links { gap: 25px; }
-    .social-links a { width: 44px; height: 44px; }
-    .social-links svg { width: 26px; height: 26px; }
+  .social-links { gap: 25px; }
+  .social-links a { width: 44px; height: 44px; }
+  .social-links svg { width: 26px; height: 26px; }
 }
