@@ -9,7 +9,7 @@ let history = [];
 let levels = [];
 let currentlyEditing = 1;
 
-console.log('%cOHAI!', 'color: limegreen; background: #222; padding: 2px; font-size: 16px;');
+console.log('%c🐈‍⬛ OHAI!', 'color: limegreen; background: #222; padding: 2px; font-size: 16px;');
 console.log('%cSource Code:', 'color: limegreen; background: #222; padding: 2px; font-size: 16px;');
 console.log('%chttps://github.com/eoinmcg/kleptokitty', 'color: #036; padding: 2px; font-size: 16px;');
 

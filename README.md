@@ -13,11 +13,13 @@ Entry for [JS13kGames 2025 jam](https://js13kgames.com/2025/games/kleptokitty)
 
 ## Play here
 
-[JS13k Game Jam entry](https://js13kgames.com/2025/games/kleptokitty)
+[🕹️ JS13k Game Jam entry](https://js13kgames.com/2025/games/kleptokitty)
   
-[Latest version](https://eoinmcgrath.com/kleptokitty)
+[🎮 Latest version](https://eoinmcgrath.com/kleptokitty)
   
-[Postmortem](https://eoinmcgrath.com/kleptokitty/postmortem)
+[🤔 Postmortem](https://eoinmcgrath.com/kleptokitty/postmortem)
+  
+[🗺️ Map Editor](https://eoinmcgrath.com/kleptokitty/mapeditor.html)
 
 ## About
 
