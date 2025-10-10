@@ -9,6 +9,10 @@ let history = [];
 let levels = [];
 let currentlyEditing = 1;
 
+console.log('%cOHAI!', 'color: limegreen; background: #222; padding: 2px; font-size: 16px;');
+console.log('%cSource Code:', 'color: limegreen; background: #222; padding: 2px; font-size: 16px;');
+console.log('%chttps://github.com/eoinmcg/kleptokitty', 'color: #036; padding: 2px; font-size: 16px;');
+
 // Initialize the map
 function initializeMap(addOutline = false) {
   mapData = Array(mapHeight).fill().map(() => '0'.repeat(mapWidth));
@@ -19,7 +23,7 @@ function initializeMap(addOutline = false) {
       } else {
         let tmp = mapData[i].split('');
         tmp[0] = '1';
-        tmp[row.length-1] = '1';
+        tmp[row.length - 1] = '1';
         mapData[i] = tmp.join('');
       }
     });
@@ -139,7 +143,7 @@ function placeTile(x, y) {
 
 // Handle tile selection
 document.querySelectorAll('.tile-option').forEach(option => {
-  option.onclick = function() {
+  option.onclick = function () {
     document.querySelectorAll('.tile-option').forEach(opt => opt.classList.remove('selected'));
     this.classList.add('selected');
     selectedTile = this.dataset.tile;
@@ -151,11 +155,11 @@ function exportMap() {
   const mapCopy = [...mapData];
   const el = document.getElementById('arrayData');
   const raw = mapCopy.reverse().join('-');
-  const arrayString = JSON.stringify(raw, null, 2)+',';
+  const arrayString = JSON.stringify(raw, null, 2) + ',';
   el.value = arrayString;
   el.select();
   el.setSelectionRange(0, 99999); // For mobile devices
-  const link = window.location.href.replace(window.location.pathname.split('/').pop(), '') + '?i='+raw;
+  const link = window.location.href.replace(window.location.pathname.split('/').pop(), '') + '?i=' + raw;
   navigator.clipboard.writeText(link);
   window.open(link);
   showStatus('Map exported to clipboard!', 'success');
@@ -186,7 +190,7 @@ function importMap() {
 
     // Validate tile values
     const validTiles = ['0', '1', 'P', 'K', 'D', 'E', 'C', 'L', 'M', 'S'];
-    const hasInvalidTiles = importedData.some(row => 
+    const hasInvalidTiles = importedData.some(row =>
       [...row].some(tile => !validTiles.includes(tile))
     );
 
@@ -217,12 +221,12 @@ function saveAll() {
   }
 
   let mapCopy = [...mapData];
-  let mapArray = JSON.stringify(mapCopy.reverse().join('-'), null, 2)+',';
+  let mapArray = JSON.stringify(mapCopy.reverse().join('-'), null, 2) + ',';
   levels[currentlyEditing] = mapArray;
 
   let levelsCopy = [...levels].join('+').replaceAll(',', '').replaceAll('"', '');
 
-  const payload = {levels: levelsCopy}
+  const payload = { levels: levelsCopy }
 
   fetch('/api/data', {
     method: 'POST', // or 'PUT'
@@ -232,7 +236,7 @@ function saveAll() {
     body: JSON.stringify(payload),
   })
     .then(response => response.json())
-    .then((data) =>  {
+    .then((data) => {
       showStatus(`Levels saved`, 'success');
     })
     .catch((error) => {
@@ -245,8 +249,8 @@ function saveAll() {
 function saveMap() {
   console.log(levels);
   const mapCopy = [...mapData];
-  const mapArray = JSON.stringify(mapCopy.reverse().join('-'), null, 2)+',';
-  const payLoad = {mapArray};
+  const mapArray = JSON.stringify(mapCopy.reverse().join('-'), null, 2) + ',';
+  const payLoad = { mapArray };
   fetch('/api/data', {
     method: 'POST', // or 'PUT'
     headers: {
@@ -308,17 +312,17 @@ function prepInput(elementId) {
 
 let keys = '01PKDGLSEC'.split('')
 keys.forEach((k, i) => {
-  keys[i] = (k == '0' || k == '1') ? 'Digit'+k : 'Key'+k; 
+  keys[i] = (k == '0' || k == '1') ? 'Digit' + k : 'Key' + k;
 });
 
 const undo = () => {
-    const lastAction = history.pop();
-    if (lastAction) {
-      mapData[lastAction[0]] = lastAction[1];
-      renderMap();
-    } else {
-      showStatus('Already at last action', 'note');
-    }
+  const lastAction = history.pop();
+  if (lastAction) {
+    mapData[lastAction[0]] = lastAction[1];
+    renderMap();
+  } else {
+    showStatus('Already at last action', 'note');
+  }
 }
 const redo = () => { }
 
@@ -339,7 +343,7 @@ addEventListener('keyup', (e) => {
 
   if (e.code === 'Equal' || e.code === 'Minus') {
     let scale = getScaleValue(mapContainer);
-    console.log({scale});
+    console.log({ scale });
     scale += (e.code === 'Equal') ? .1 : -.1;;
     mapContainer.style.transform = `scale(${scale})`
     scaleInputEl.value = scale;
@@ -370,7 +374,7 @@ addEventListener('keyup', (e) => {
 
   if (!modalOpen && keys.includes(e.code) && !e.shiftKey) {
     let k = e.code.split('').pop();
-    document.querySelector('.tile-option[data-tile="'+k+'"]').click();
+    document.querySelector('.tile-option[data-tile="' + k + '"]').click();
   }
 });
 
@@ -404,7 +408,7 @@ loadLevels()
     let html = '';
     currentlyEditing = 0;
     levels.forEach((level, i) => {
-      let title = `Level ${i+1}`;
+      let title = `Level ${i + 1}`;
       html += `<li><a ${i === 0 ? 'class="active"' : ''} href="#" data-level=${i}>${title}</a></li>`;
     });
     document.querySelector('ul.levels').innerHTML = html;
@@ -412,7 +416,7 @@ loadLevels()
       e.preventDefault();
       let prev = currentlyEditing;
       let mapCopy = [...mapData];
-      let mapArray = JSON.stringify(mapCopy.reverse().join('-'), null, 2)+',';
+      let mapArray = JSON.stringify(mapCopy.reverse().join('-'), null, 2) + ',';
       history = [];
 
       levels[prev] = mapArray;
@@ -428,7 +432,7 @@ loadLevels()
 
 
 
-const rows = 32/8;
+const rows = 32 / 8;
 const tiles = {
   player: 0,
   key: 3,
@@ -440,9 +444,9 @@ const tiles = {
 }
 
 const getCoords = (tile) => {
-  let x = (tile%rows)*8;
-  let y = Math.floor(tile/rows)*8;
-  return {x, y};
+  let x = (tile % rows) * 8;
+  let y = Math.floor(tile / rows) * 8;
+  return { x, y };
 }
 const makeImage = (src, name, x, y) => {
   let size = 64;
@@ -450,7 +454,7 @@ const makeImage = (src, name, x, y) => {
   canvas.width = size;
   canvas.height = size;
   const ctx = canvas.getContext('2d');
-  ctx.imageSmoothingEnabled= false
+  ctx.imageSmoothingEnabled = false
   ctx.drawImage(src, x, y, 8, 8, 0, 0, size, size);
   const i = document.createElement('img');
   i.title = name;
@@ -468,9 +472,9 @@ canvas.height = size;
 const ctx = canvas.getContext('2d');
 const img = new Image();
 img.onload = () => {
-  for(let t in tiles) {
+  for (let t in tiles) {
     let tileNumber = tiles[t];
-    let {x, y} = getCoords(tileNumber);
+    let { x, y } = getCoords(tileNumber);
     makeImage(img, t, x, y);
   }
 };
@@ -556,7 +560,7 @@ const closeModal = (modal) => {
 document.addEventListener("click", (event) => {
 
   const isClickInsideMenu = menu.contains(event.target);
-  const isClickOnMenuButton = menuButton.contains(event.target) 
+  const isClickOnMenuButton = menuButton.contains(event.target)
     || document.querySelector('.menu-toggle-label').contains(event.target);
 
   if (!isClickInsideMenu && !isClickOnMenuButton && !visibleModal) {
@@ -632,7 +636,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Mouse/Touch move handler
   const drag = (e) => {
     if (!isDragging) return;
-    
+
     // Prevent default to avoid selection and scrolling issues on mobile
     e.preventDefault();
 
@@ -711,13 +715,13 @@ function getScaleValue(element) {
   // Check if the transform value is a matrix
   if (transform.startsWith('matrix(')) {
     const matrixValues = transform.match(/matrix\(([^,]+),/);
-    
+
     if (matrixValues && matrixValues.length > 1) {
       // The scaleX value is the first value in the matrix
       return parseFloat(matrixValues[1]);
     }
   }
-  
+
   // Return a default scale of 1 if no transform is found
   return 1;
 }
