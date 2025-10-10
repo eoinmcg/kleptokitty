@@ -15,6 +15,7 @@ export default class Player extends Sprite {
     this.exited = false;
     // Object.assign(this, opts);
     this.swipe = new Swiper();
+    this.swipe.clear();
     this.renderOrder = 10;
   }
 

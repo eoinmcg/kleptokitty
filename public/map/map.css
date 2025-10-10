@@ -235,7 +235,7 @@ details[role="list"] summary + ul li a:hover { background: rgba(255,255,255,0.2)
   position: fixed;
   top: 100px;
   left: 20px;
-  width: 64px;
+  width: 128px;
   padding: 2px;
   background-color: #f0f0f0;
   border: 1px solid #ccc;
@@ -277,7 +277,7 @@ details[role="list"] summary + ul li a:hover { background: rgba(255,255,255,0.2)
 
 .tile-selector {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 2px;
 }
 .tile-selector div { text-align: left; }
